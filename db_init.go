@@ -55,21 +55,18 @@ func newDBTool(p *DsProperty) (*mydb, error) {
 
 // Init 加载指定数据库配置文件
 // replace param 只支持最多一个参数 key为alias的值，value为要替换的值，默认值不替换
-func Init(filePath string, replace ...map[string]DsProperty) error {
+func Init(filePath string, replaces ...map[string]DsProperty) error {
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		return err
 	}
 
-	if len(replace) >= 1 {
-		if replace[0] == nil {
-			replace[0] = map[string]DsProperty{}
-		}
-	} else {
-		replace[0] = map[string]DsProperty{}
+	replace := make(map[string]DsProperty)
+	if len(replaces) >= 1 && replaces[0] != nil {
+		replace = replaces[0]
 	}
 
-	if err := resolveConf(data, replace[0]); err != nil {
+	if err := resolveConf(data, replace); err != nil {
 		return err
 	}
 	// 初始化日志-默认使用os.Stdout

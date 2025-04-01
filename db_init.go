@@ -65,6 +65,8 @@ func Init(filePath string, replace ...map[string]DsProperty) error {
 		if replace[0] == nil {
 			replace[0] = map[string]DsProperty{}
 		}
+	} else {
+		replace[0] = map[string]DsProperty{}
 	}
 
 	if err := resolveConf(data, replace[0]); err != nil {
